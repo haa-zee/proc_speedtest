@@ -29,3 +29,9 @@ tm ./proc_speed_test_C
 echo -e "\nLUA"
 tm luajit ./proc_speed_test.lua
 
+echo -e "\nC 2. változat"
+tm ./proc_speed_test_C2
+
+echo -e "\nRust"
+tm ./proc_speed_test_Rust
+

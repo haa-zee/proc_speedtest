@@ -32,6 +32,7 @@ microcode	: 0xc2
 Készült: 2018.03.31
 
 
+Köszönet tbs és hg2ecz huptársaknak :)
 
 
 
