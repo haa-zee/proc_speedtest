@@ -5,18 +5,18 @@ Kíváncsi voltam, egy pythonban megírt monitoring program mennyire vállalhat�
 De számomra a legmeglepőbb az volt, hogy a java változat, amit nem tudtam eléggé primitívre alakítani, egyedül a python3-as verziónál fut gyorsabban. Update: a java kód optimalizálása drasztikus javulást eredményezett.
 
 
-####Kernel: 4.13.0-37-generic #42~16.04.1-Ubuntu SMP 
-####CPU: 
-processor	: 3
+#### Kernel: 4.13.0-37-generic #42~16.04.1-Ubuntu SMP 
+#### CPU: 
+<pre>processor	: 3
 vendor_id	: GenuineIntel
 cpu family	: 6
 model		: 78
 model name	: Intel(R) Core(TM) i5-6300U CPU @ 2.40GHz
 stepping	: 3
 microcode	: 0xc2
+</pre>
 
-
-####Futásidők (öt futtatás átlagai, kerekítve):
+#### Futásidők (öt futtatás átlagai, kerekítve):
 
 - C:		18s
 - Java:		29s
