@@ -4,9 +4,12 @@
 !*.c
 !*.py
 !*.rb
+!*.rs
 !*.sh
 !*.md
 !*.MD
 !*.java
 !.gitignore
 proc_speed_test_C
+proc_speed_test_C2
+proc_speed_test_Rust
