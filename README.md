@@ -5,10 +5,18 @@ Kíváncsi voltam, egy pythonban megírt monitoring program mennyire vállalhat�
 De számomra a legmeglepőbb az volt, hogy a java változat, amit nem tudtam eléggé primitívre alakítani, egyedül a python3-as verziónál fut gyorsabban. Update: a java kód optimalizálása drasztikus javulást eredményezett.
 
 
-Kernel: 4.13.0-37-generic #42~16.04.1-Ubuntu SMP 
-<br>CPU: model name	: Intel(R) Core(TM) i5-6300U CPU @ 2.40GHz
+####Kernel: 4.13.0-37-generic #42~16.04.1-Ubuntu SMP 
+####CPU: 
+processor	: 3
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 78
+model name	: Intel(R) Core(TM) i5-6300U CPU @ 2.40GHz
+stepping	: 3
+microcode	: 0xc2
 
-Futásidők (öt futtatás átlagai, kerekítve):
+
+####Futásidők (öt futtatás átlagai, kerekítve):
 
 - C:		18s
 - Java:		29s
@@ -19,6 +27,8 @@ Futásidők (öt futtatás átlagai, kerekítve):
 - Python3:	65s
 - Ruby:		27s
 
+
+
 Készült: 2018.03.31
 
 
@@ -26,8 +36,8 @@ Készült: 2018.03.31
 
 
 --------------------------------------------------------------------------------------------------------------------------------
-Elavult infók.<br>
-~~Futásidők nagyjából (öt futtatás átlagai), 4.13.0-32 kernellel:
+### Elavult infók.<br>
+Futásidők nagyjából (öt futtatás átlagai), 4.13.0-32 kernellel:
 -  C: 		27s
 -  Python 2.7:	41s
 -  Python 3:	85s
@@ -44,4 +54,3 @@ Elavult infók.<br>
 -  Java:	55s
 -  Perl:	25s
 
-~~
