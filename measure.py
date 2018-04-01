@@ -15,6 +15,7 @@ def run_tests():
     #   2. Paraméter(ek) a futtatandó program számára. Üres, ha a teszt bináris,
     #      a szkript, bájtkód fájl neve egyébként.
     #   3. A teszt neve, csak komment funkcióval.
+    # TODO: az egészet külön param.fájlba pakolni (XML, YAML, JSON stb.)
     tests = (
         ("java", "Proc_Speed_Test", "Java"),
         ("luajit", "proc_speed_test.lua", "LUA"),
