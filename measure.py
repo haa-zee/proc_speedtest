@@ -20,7 +20,7 @@ def run_tests():
         ("perl", "proc_speed_test.pl", "Perl"),
         ("python", "proc_speed_test.py", "Python2"),
         ("python3", "proc_speed_test.py", "Python3"),
-        ("rubyxx", "proc_speed_test.rb", "Ruby"),
+        ("ruby", "proc_speed_test.rb", "Ruby"),
         ("./proc_speed_test_C", "", "C"),
         ("./proc_speed_test_C2", "", "C2"),
         ("./proc_speed_test_Rust", "", "Rust")
