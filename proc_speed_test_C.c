@@ -6,7 +6,7 @@ int main(int argc, char * argv[]){
 
 	glob_t pglob;
 	unsigned int i,j;
-	unsigned int errctr,ctr=0;
+	unsigned int errctr=0,ctr=0;
 	char buff[10000];
 
 
@@ -27,7 +27,7 @@ int main(int argc, char * argv[]){
 	}
 
 	printf("Count: %u\n",ctr);
-	printf("Error Count: %u\n",errctr);
+	printf("Error: %u\n",errctr);
 
 	return 0;
 }
