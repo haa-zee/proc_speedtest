@@ -2,32 +2,37 @@
 # -*- coding: utf-8 -*-
 
 import os
+import sys
 import subprocess
 import shlex
 import shutil
+import json
 
 
 def run_tests():
-    # tests = a futtatandó tesztek listája
-    # Az egyes elemek:
-    #   1. Futtatandó bináris, ami lehet maga a teszt (C, Rust) vagy
-    #      az interpreter (Python, Ruby, Lua, Java stb.)
-    #   2. Paraméter(ek) a futtatandó program számára. Üres, ha a teszt bináris,
-    #      a szkript, bájtkód fájl neve egyébként.
-    #   3. A teszt neve, csak komment funkcióval.
-    # TODO: az egészet külön param.fájlba pakolni (XML, YAML, JSON stb.)
-    tests = (
-        ("java", "Proc_Speed_Test", "Java"),
-        ("luajit", "proc_speed_test.lua", "LUA"),
-        ("perl", "proc_speed_test.pl", "Perl"),
-        ("python", "proc_speed_test.py", "Python2"),
-        ("python3", "proc_speed_test.py", "Python3"),
-        ("pypy", "proc_speed_test.py", "Pypy"),
-        ("ruby", "proc_speed_test.rb", "Ruby"),
-        ("./proc_speed_test_C", "", "C"),
-        ("./proc_speed_test_C2", "", "C2"),
-        ("./proc_speed_test_Rust", "", "Rust")
-    )
+
+    # Paraméter fájl: proc_speed_test.json
+    # Formátum:
+    # { "counter": <n>, "tests": [["program", "paraméter", "elnevezés"], ...] }
+    # counter: hányszor kell futtatni a teszteket
+    # tests: az egyes tesztek leírása lista formátumban, ahol a program a bináris vagy az interpreter, paraméter az
+    #        interpreternek átadandó szkript név, illetve java jellegű program esetében az osztály neve, az elnevezés
+    #        egy komment, ami alapján később azonosítani lehet az eredményeket
+    tests = []
+    try:
+        with open('proc_speed_test.json', 'r') as conf_file:
+            config_data = json.load(conf_file)
+        print("Counter: {}\n".format(config_data['counter']))
+        for (prog, param, name) in config_data["tests"]:
+            tests.append((prog, param, name))
+        for i in tests:
+            print(i)
+
+    except Exception as e:
+        print(type(e), file=sys.stderr)
+        print(e.__str__(), file=sys.stderr)
+        sys.exit(-1)
+
 
     tests = (("./proc_speed_test_Rust", "", "Rust"),)
 
@@ -53,6 +58,7 @@ def run_tests():
 
             (proc_out, proc_err) = proc.communicate()
             print(proc_out.decode('utf-8').splitlines())
+
         else:
             print("   Not executable")
 

@@ -1,0 +1,15 @@
+{
+	"counter" : 5, 
+	"tests" : [
+		["java", "Proc_Speed_Test", "Java"], 
+		["luajit", "proc_speed_test.lua", "LUA"], 
+		["perl", "proc_speed_test.pl", "Perl"], 
+		["python", "proc_speed_test.py", "Python2"], 
+		["python3", "proc_speed_test.py", "Python3"], 
+		["pypy", "proc_speed_test.py", "Pypy"], 
+		["ruby", "proc_speed_test.rb", "Ruby"], 
+		["./proc_speed_test_C", "", "C"], 
+		["./proc_speed_test_C2", "", "C2"], 
+		["./proc_speed_test_Rust", "", "Rust"]
+	]
+}
