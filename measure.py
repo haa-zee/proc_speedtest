@@ -10,58 +10,72 @@ import json
 
 
 def run_tests():
-
     # Paraméter fájl: proc_speed_test.json
     # Formátum:
-    # { "counter": <n>, "tests": [["program", "paraméter", "elnevezés"], ...] }
-    # counter: hányszor kell futtatni a teszteket
+    # { "repeat": <n>, "tests": [["program", "paraméter", "elnevezés"], ...] }
+    # repeat: hányszor kell futtatni a teszteket
     # tests: az egyes tesztek leírása lista formátumban, ahol a program a bináris vagy az interpreter, paraméter az
     #        interpreternek átadandó szkript név, illetve java jellegű program esetében az osztály neve, az elnevezés
-    #        egy komment, ami alapján később azonosítani lehet az eredményeket
-    tests = []
+    #        egy komment, ami alapján később azonosítani lehet az eredményeket (erre elvben jó lenne a program mező
+    #        tartalma is, csak rondának találtam a ./speed_test formát.
+    tests = {}
     try:
         with open('proc_speed_test.json', 'r') as conf_file:
             config_data = json.load(conf_file)
-        print("Counter: {}\n".format(config_data['counter']))
+
         for (prog, param, name) in config_data["tests"]:
-            tests.append((prog, param, name))
-        for i in tests:
-            print(i)
+            # A tests dictionary-be csak azok a tesztek kerülnek be, amelyek programja futtathatónak tűnik.
+            # pl. ha nincs java telepítve, akkor a java teszt kimarad. Azt sajn
+            if shutil.which(prog):
+                cmd=shlex.split(prog + " " + param)
+                tests[name]=[cmd, []]
+            else:
+                print("{} is missing or not executable".format(prog), file=sys.stderr)
 
     except Exception as e:
         print(type(e), file=sys.stderr)
-        print(e.__str__(), file=sys.stderr)
+        print(e, file=sys.stderr)
         sys.exit(-1)
 
-
-    tests = (("./proc_speed_test_Rust", "", "Rust"),)
-
-    for (program, parameter, comment) in tests:
-        print("{}:  {} {}".format(comment, program, parameter))
-
-        # Ellenőrzöm, hogy a bináris megvan és végrehajtható-e, de ha szkript vagy bájtkód a futtatandó,
-        # akkor a Java miatt nem tudom korrektül megoldani az input létének ellenőrzését, mert a java nem fájlnevet
-        # vár, hanem az osztály nevét, amiben a main metódus szerepel (jar fájlokkal nem akarom bonyolítani az életet)
-        # Ha megvan és futtatható (shutil.which nem null stringet ad vissza), akkor futtatom.
-        if shutil.which(program):
-            cmd = shlex.split(program + " " + parameter)
+    for i in range(config_data["repeat"]):
+        print("Round: {}".format(i+1))
+        faulty_tests=[]
+        for test_name in tests.keys():
+            cmd = tests[test_name][0]
+            print("  - {} ({})".format(test_name, cmd))
             proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-
-            # os.wait4 fontos, hogy előbb legyen, mint a proc.communicate, mert az utóbbi egyben wait is!!
+            ## os.wait4 fontos, hogy előbb legyen, mint a proc.communicate, mert az utóbbi egyben wait is!!
             (pid, exit_code, used_resources) = os.wait4(proc.pid, 0)
-            print("{}: {} {} {} {} {}".format(comment, exit_code,
-                                              used_resources.ru_utime, used_resources.ru_stime,
-                                              used_resources.ru_nvcsw, used_resources.ru_nivcsw))
 
-            # TODO: a used_resources tartalmát gyűjteni több cikluson át és a futtatások végén kiírni az átlagokat
-            # Lehet, hogy nem procedurális megközelítéssel kellene, hanem OOP alapon ezt a részét?
+            if exit_code == 0:
+                tests[test_name][1].append(used_resources)
+            else:
+                print("Test {} failed. Exit code: {}".format(test_name, exit_code), file=sys.stderr)
+                faulty_tests.append(test_name)
 
             (proc_out, proc_err) = proc.communicate()
-            print(proc_out.decode('utf-8').splitlines())
 
-        else:
-            print("   Not executable")
+            for line in proc_err.decode('utf-8').splitlines():
+                print("    Test {} stderr: {}".format(test_name, line), file=sys.stderr)
+            for line in proc_out.decode('utf-8').splitlines():
+                print("    Test {} stdout: {}".format(test_name,line))
 
+        for test_name in faulty_tests:
+            del tests[test_name]
+            print("Faulty test {} deleted".format(test_name), file=sys.stderr)
+
+    for test_name in tests:
+        print("\n\n")
+        print("Test: {}".format(test_name))
+        summ_ut = 0
+        summ_st = 0
+        for results in tests[test_name][1]:
+            print("    User: {}  System: {}".format(results.ru_utime, results.ru_stime))
+            summ_ut += results.ru_utime
+            summ_st += results.ru_stime
+
+        print("    U.avg: {}   S.avg: {}".format(summ_ut/len(tests[test_name][1]), summ_st/len(tests[test_name][1])))
 
 if __name__ == "__main__":
     run_tests()
+    sys.exit(0)
