@@ -74,7 +74,9 @@ def run_tests():
             summ_ut += results.ru_utime
             summ_st += results.ru_stime
 
-        print("    U.avg: {}   S.avg: {}".format(summ_ut/len(tests[test_name][1]), summ_st/len(tests[test_name][1])))
+        avg_ut = summ_ut/len(tests[test_name][1])
+        avg_st = summ_st/len(tests[test_name][1])
+        print("    U.avg: {}   S.avg: {}    Total avg: {}".format(avg_ut, avg_st, avg_ut+avg_st))
 
 if __name__ == "__main__":
     run_tests()
