@@ -8,9 +8,10 @@ import shlex
 import shutil
 import json
 
+PARAMETER_FILE = 'measure.json'  # type: str
 
 def run_tests():
-    # Paraméter fájl: proc_speed_test.json
+    # Paraméter fájl: measure.json
     # Formátum:
     # { "repeat": <n>, "tests": [["program", "paraméter", "elnevezés"], ...] }
     # repeat: hányszor kell futtatni a teszteket
@@ -20,12 +21,13 @@ def run_tests():
     #        tartalma is, csak rondának találtam a ./speed_test formát.
     tests = {}
     try:
-        with open('proc_speed_test.json', 'r') as conf_file:
+        with open(PARAMETER_FILE, 'r') as conf_file:
             config_data = json.load(conf_file)
 
         for (prog, param, name) in config_data["tests"]:
             # A tests dictionary-be csak azok a tesztek kerülnek be, amelyek programja futtathatónak tűnik.
-            # pl. ha nincs java telepítve, akkor a java teszt kimarad. Azt sajn
+            # pl. ha nincs java telepítve, akkor a java teszt kimarad. Azt sajnos nem tudtam megoldani egyszerűen,
+            # hogy ha csak a paraméterként átadott szkript hiányzik, akkor is elsőre dobja ki
             if shutil.which(prog):
                 cmd=shlex.split(prog + " " + param)
                 tests[name]=[cmd, []]
