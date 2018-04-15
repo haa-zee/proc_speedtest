@@ -7,8 +7,10 @@ import subprocess
 import shlex
 import shutil
 import json
+from typing import List, Any
 
 PARAMETER_FILE = 'measure.json'  # type: str
+
 
 def run_tests():
     # Paraméter fájl: measure.json
@@ -29,8 +31,8 @@ def run_tests():
             # pl. ha nincs java telepítve, akkor a java teszt kimarad. Azt sajnos nem tudtam megoldani egyszerűen,
             # hogy ha csak a paraméterként átadott szkript hiányzik, akkor is elsőre dobja ki
             if shutil.which(prog):
-                cmd=shlex.split(prog + " " + param)
-                tests[name]=[cmd, []]
+                cmd = shlex.split(prog + " " + param)
+                tests[name] = [cmd, []]
             else:
                 print("{} is missing or not executable".format(prog), file=sys.stderr)
 
@@ -41,12 +43,12 @@ def run_tests():
 
     for i in range(config_data["repeat"]):
         print("Round: {}".format(i+1))
-        faulty_tests=[]
+        faulty_tests = []  # type: List[Any]
         for test_name in tests.keys():
             cmd = tests[test_name][0]
             print("  - {} ({})".format(test_name, cmd))
             proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            ## os.wait4 fontos, hogy előbb legyen, mint a proc.communicate, mert az utóbbi egyben wait is!!
+            # os.wait4 fontos, hogy előbb legyen, mint a proc.communicate, mert az utóbbi egyben wait is!!
             (pid, exit_code, used_resources) = os.wait4(proc.pid, 0)
 
             if exit_code == 0:
@@ -60,7 +62,7 @@ def run_tests():
             for line in proc_err.decode('utf-8').splitlines():
                 print("    Test {} stderr: {}".format(test_name, line), file=sys.stderr)
             for line in proc_out.decode('utf-8').splitlines():
-                print("    Test {} stdout: {}".format(test_name,line))
+                print("    Test {} stdout: {}".format(test_name, line))
 
         for test_name in faulty_tests:
             del tests[test_name]
@@ -79,6 +81,7 @@ def run_tests():
         avg_ut = summ_ut/len(tests[test_name][1])
         avg_st = summ_st/len(tests[test_name][1])
         print("    U.avg: {}   S.avg: {}    Total avg: {}".format(avg_ut, avg_st, avg_ut+avg_st))
+
 
 if __name__ == "__main__":
     run_tests()
