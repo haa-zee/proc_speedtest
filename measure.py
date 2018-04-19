@@ -7,6 +7,7 @@ import subprocess
 import shlex
 import shutil
 import json
+from collections import OrderedDict
 from typing import List, Any
 
 PARAMETER_FILE = 'measure.json'  # type: str
@@ -24,7 +25,7 @@ def run_tests():
     tests = {}
     try:
         with open(PARAMETER_FILE, 'r') as conf_file:
-            config_data = json.load(conf_file)
+            config_data = json.load(conf_file, object_pairs_hook=OrderedDict)
 
         for (prog, param, name) in config_data["tests"]:
             # A tests dictionary-be csak azok a tesztek kerülnek be, amelyek programja futtathatónak tűnik.

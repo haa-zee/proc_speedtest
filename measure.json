@@ -1,5 +1,5 @@
 {
-  "repeat" : 1,
+  "repeat" : 5,
   "tests" : [
     ["java", "-classpath ./tests/ Proc_Speed_Test", "Java"],
     ["luajit", "./tests/proc_speed_test.lua", "LUA"],
