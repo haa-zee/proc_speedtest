@@ -1,6 +1,6 @@
 {
-  "repeat" : 5,
-  "tests" : [
+  "repeat" : 2,
+  "xtests" : [
     ["java", "-classpath ./tests/ Proc_Speed_Test", "Java"],
     ["luajit", "./tests/proc_speed_test.lua", "LUA"],
     ["perl", "./tests/proc_speed_test.pl", "Perl"],
@@ -9,6 +9,10 @@
     ["pypy", "./tests/proc_speed_test.py", "Pypy"],
     ["ruby", "./tests/proc_speed_test.rb", "Ruby"],
     ["./tests/proc_speed_test_C", "", "C"],
+    ["./tests/proc_speed_test_C2", "", "C2"],
+    ["./tests/proc_speed_test_Rust", "", "Rust"]
+  ],
+  "tests" : [
     ["./tests/proc_speed_test_C2", "", "C2"],
     ["./tests/proc_speed_test_Rust", "", "Rust"]
   ]
