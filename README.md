@@ -68,7 +68,7 @@ microcode	: 0xc2
 <s>Készült: 2018.03.31</s>
 
 
-Köszönet tbs (LUA) és hg2ecz (C2 & Rust) huptársaknak :)
+Köszönet tbs (LUA) és hg2ecz (C2 & Rust) uraknak :)
 
 
 
